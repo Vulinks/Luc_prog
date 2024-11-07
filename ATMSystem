@@ -1,0 +1,94 @@
+import java.util.Scanner;
+
+public class ATMSystem {
+
+    // Переменные для хранения баланса и пин-кода
+    private static double balance = 0.01;
+    private static int pinCode = 1111;
+    private static Scanner scanner = new Scanner(System.in);
+
+    public static void main(String[] args) {
+        // Проверка пин-кода при запуске программы
+        if (!verifyPin()) {
+            System.out.println("Доступ не получен!");
+            return; // Завершение программы, если пин-код неверный
+        }
+
+        // Запуск основного меню, если пин-код верный
+        runATMMenu();
+    }
+
+    // Метод для проверки пин-кода
+    private static boolean verifyPin() {
+        System.out.println("Пожалуйста, введите правильный пин-код!");
+        System.out.print("Введите пин-код: ");
+        int enteredPin = scanner.nextInt(); // Считывание пин-кода
+        return enteredPin == pinCode; // Возвращает true, если пин-код совпадает
+    }
+
+    // Основное меню банкомата
+    private static void runATMMenu() {
+        while (true) {
+            printMenu(); // Вывод меню
+            int choice = scanner.nextInt(); // Считывание выбора пользователя
+
+            // Выполнение действий в зависимости от выбора
+            switch (choice) {
+                case 1:
+                    System.out.printf("Ваш баланс: $%.2f%n", balance);
+                    break;
+                case 2:
+                    deposit();
+                    break;
+                case 3:
+                    withdraw();
+                    break;
+                case 4:
+                    changePin();
+                    break;
+                case 5:
+                    System.out.println("Хорошего вам дня.");
+                    return; // Завершение программы
+                default:
+                    System.out.println("Неверный выбор. Пожалуйста, попробуйте снова.");
+            }
+        }
+    }
+
+    // Метод для вывода меню
+    private static void printMenu() {
+        System.out.println("1. Проверка счета");
+        System.out.println("2. Внесение денег");
+        System.out.println("3. Снятие наличных");
+        System.out.println("4. Изменить пин код");
+        System.out.println("5. Выйти из системы");
+        System.out.print("Введите свой выбор: ");
+    }
+
+    // Метод для внесения денег
+    private static void deposit() {
+        System.out.print("Введите сумму для депозита: ");
+        double amount = scanner.nextDouble(); // Считывание суммы
+        balance += amount; // Увеличение баланса
+        System.out.printf("$%.2f внесено в ваш счет.%n", amount);
+    }
+
+    // Метод для снятия наличных
+    private static void withdraw() {
+        System.out.print("Введите сумму для снятие: ");
+        double amount = scanner.nextDouble(); // Считывание суммы
+        if (amount <= balance) { // Проверка, хватает ли средств на балансе
+            balance -= amount; // Уменьшение баланса
+            System.out.printf("$%.2f снято с вашего счета.%n", amount);
+        } else {
+            System.out.println("Недостаточно средств на счете."); // Ошибка, если средств не хватает
+        }
+    }
+
+    // Метод для изменения пин-кода
+    private static void changePin() {
+        System.out.print("Введите новый пин код: ");
+        pinCode = scanner.nextInt(); // Считывание нового пин-кода
+        System.out.println("Вы успешно изменили пин код!!!");
+    }
+}
